@@ -18,8 +18,7 @@ if(!isset($_SESSION['rol']) || $_SESSION['rol'] != "abogado"){
 
 <div class="header">
     <span>⚖️ García & Asociados</span>
-
-    <span>Bienvenido, <?php echo $_SESSION['usuario']; ?></span>
+    <span>Bienvenido, <?php echo htmlspecialchars($_SESSION['Nom_abgd'].' '.$_SESSION['App_abgd']); ?></span>
 </div>
 <div class="header-slogan">Compromiso, ética y ley.</div>
 

@@ -1,46 +1,57 @@
 <?php
 session_start();
-include "../INC/conexion.php"; // Este archivo lo crearemos en el siguiente paso
+require_once __DIR__ . '/../inc/conexion.php';
 
-$correo = $_POST['correo'];
-$password = $_POST['password'];
+$correo   = isset($_POST['correo'])   ? trim($_POST['correo'])   : '';
+$password = isset($_POST['password']) ? trim($_POST['password']) : '';
 
-// Verificar si es abogado
-$sql_abogado = "SELECT * FROM abogado WHERE Cor_abgd = '$correo' AND Con_abgd = '$password'";
-$result_abogado = $conexion->query($sql_abogado);
-
-if($result_abogado->num_rows > 0){
-    $data = $result_abogado->fetch_assoc();
-$_SESSION['rol'] = "abogado";
-$_SESSION['Ced_abgd'] = $data['Ced_abgd'];
-$_SESSION['Nom_abgd'] = $data['Nom_abgd'];
-$_SESSION['App_abgd'] = $data['App_abgd'];
-$_SESSION['Apm_abgd'] = $data['Apm_abgd'];
-
-    header("Location: ../vistas/panel_abogado.php");
-    exit();
+if ($correo === '' || $password === '') {
+    header('Location: ../vistas/login.php?error=1'); exit;
 }
 
-// Verificar si es cliente
-$sql_cliente = "SELECT * FROM cliente WHERE Cor_cl = '$correo' AND Con_cli = '$password'";
-$result_cliente = $conexion->query($sql_cliente);
-
-if($result_cliente->num_rows > 0){
-    $data = $result_cliente->fetch_assoc();
-
-    $_SESSION['rol'] = "cliente";
-
-    $_SESSION['id_cl']  = $data['Id_cl'];
-    $_SESSION['Nom_cl'] = $data['Nom_cl'];
-    $_SESSION['App_cl'] = $data['App_cl'];
-    $_SESSION['Apm_cl'] = $data['Apm_cl'];
-
-    header("Location: ../vistas/panel_cliente.php");
-    exit();
+/* 1) Intentar como ABOGADO */
+$sql = "SELECT Id_abgd, Nom_abgd, App_abgd, Apm_abgd, Cor_abgd, Con_abgd
+        FROM abogado
+        WHERE Cor_abgd = ? AND Con_abgd = ? LIMIT 1";
+if (!$stmt = $conexion->prepare($sql)) {
+    die("Error SQL (abogado->prepare): " . $conexion->error);
 }
+$stmt->bind_param('ss', $correo, $password);
+$stmt->execute();
+$res = $stmt->get_result();
+if ($row = $res->fetch_assoc()) {
+    $_SESSION['rol']      = 'abogado';
+    $_SESSION['Id_abgd']  = (int)$row['Id_abgd'];
+    $_SESSION['Nom_abgd'] = $row['Nom_abgd'];
+    $_SESSION['App_abgd'] = $row['App_abgd'];
+    $_SESSION['Apm_abgd'] = $row['Apm_abgd'];
+    $_SESSION['usuario']  = $row['Nom_abgd']; // si lo usas en algún header
+    $stmt->close();
+    header('Location: ../vistas/panel_abogado.php'); exit;
+}
+$stmt->close();
 
+/* 2) Intentar como CLIENTE */
+$sql = "SELECT Id_cl, Nom_cl, App_cl, Apm_cl, Cor_cl, Con_cli
+        FROM cliente
+        WHERE Cor_cl = ? AND Con_cli = ? LIMIT 1";
+if (!$stmt = $conexion->prepare($sql)) {
+    die("Error SQL (cliente->prepare): " . $conexion->error);
+}
+$stmt->bind_param('ss', $correo, $password);
+$stmt->execute();
+$res = $stmt->get_result();
+if ($row = $res->fetch_assoc()) {
+    $_SESSION['rol']     = 'cliente';
+    $_SESSION['id_cl']   = (int)$row['Id_cl'];
+    $_SESSION['Nom_cl']  = $row['Nom_cl'];
+    $_SESSION['App_cl']  = $row['App_cl'];
+    $_SESSION['Apm_cl']  = $row['Apm_cl'];
+    $_SESSION['usuario'] = $row['Nom_cl']; // si lo usas en algún header
+    $stmt->close();
+    header('Location: ../vistas/panel_cliente.php'); exit;
+}
+$stmt->close();
 
-
-// Si no coincide
-header("Location: ../VISTAS/login.php?error=1");
-exit();
+/* 3) Si no coincide */
+header('Location: ../vistas/login.php?error=1'); exit;

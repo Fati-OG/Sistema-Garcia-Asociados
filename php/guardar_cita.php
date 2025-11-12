@@ -1,27 +1,33 @@
 <?php
-include "../INC/conexion.php";
 session_start();
+include "../inc/conexion.php";
 
-$Id_cl_ct   = $_POST['Id_cl_ct'];
-$Da_ct      = $_POST['Da_ct'];
-$Hra_ct     = $_POST['Hra_ct'];
-$Ced_abgd_ct = $_POST['Ced_abgd_ct'];
-$Nom_abgd_ct = $_POST['Nom_abgd_ct'];
-$App_abgd_ct = $_POST['App_abgd_ct'];
-$Apm_abgd_ct = $_POST['Apm_abgd_ct'];
+if(!isset($_SESSION['rol']) || $_SESSION['rol'] != "abogado"){
+    header("Location: ../vistas/login.php");
+    exit();
+}
+
+$id_cliente = $_POST['cliente'];
+$fecha = $_POST['fecha'];
+$hora = $_POST['hora'];
+
+$nom_abg = $_SESSION['Nom_abgd'];
+$app_abg = $_SESSION['App_abgd'];
+$apm_abg = $_SESSION['Apm_abgd'];
 
 // Obtener datos del cliente
-$cl = $conexion->query("SELECT Nom_cl, App_cl, Apm_cl FROM cliente WHERE Id_cl=$Id_cl_ct");
-$cliente = $cl->fetch_assoc();
+$sql_cliente = "SELECT * FROM cliente WHERE Id_cl = $id_cliente LIMIT 1";
+$res = $conexion->query($sql_cliente);
+$cliente = $res->fetch_assoc();
 
-$Nom_cl_ct = $cliente['Nom_cl'];
-$App_cl_ct = $cliente['App_cl'];
-$Apm_cl_ct = $cliente['Apm_cl'];
+// Insertar la cita
+$sql_insert = "INSERT INTO cita (Hra_ct, Da_ct, Id_cl_ct, Nom_cl_ct, App_cl_ct, Apm_cl_ct, abgd_id_ct, Nom_abgd_ct, App_abgd_ct, Apm_abgd_ct)
+VALUES ('$hora', '$fecha', '$id_cliente', '".$cliente['Nom_cl']."', '".$cliente['App_cl']."', '".$cliente['Apm_cl']."', NULL, '$nom_abg', '$app_abg', '$apm_abg')";
 
-$sql = "INSERT INTO cita (Hra_ct, Da_ct, Id_cl_ct, Nom_cl_ct, App_cl_ct, Apm_cl_ct, Ced_abgd_ct, Nom_abgd_ct, App_abgd_ct, Apm_abgd_ct)
-VALUES ('$Hra_ct', '$Da_ct', $Id_cl_ct, '$Nom_cl_ct', '$App_cl_ct', '$Apm_cl_ct', $Ced_abgd_ct, '$Nom_abgd_ct', '$App_abgd_ct', '$Apm_abgd_ct')";
-
-$conexion->query($sql);
-
-header("Location: ../vistas/cita_cliente.php");
-exit();
+if($conexion->query($sql_insert)){
+    header("Location: ../vistas/citas_abogado.php");
+    exit();
+}else{
+    die("Error al guardar cita: " . $conexion->error);
+}
+?>

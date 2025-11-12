@@ -7,14 +7,14 @@ session_start();
 <head>
 <meta charset="UTF-8">
 <title>Iniciar Sesión</title>
-<link rel="stylesheet" href="../CSS/login.css">
+<link rel="stylesheet" href="../css/login.css">
 </head>
 <body>
 
 <div class="login-box">
     <h2>Iniciar Sesión</h2>
 
-    <form action="../PHP/login_procesar.php" method="POST">
+    <form action="../php/login_procesar.php" method="POST">
 
         <input type="text" name="correo" placeholder="Correo" required>
         <input type="password" name="password" placeholder="Contraseña" required>
