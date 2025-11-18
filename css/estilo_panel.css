@@ -1,81 +1,96 @@
-@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=Montserrat:wght@300;400;600&display=swap');
-
-body {
-    margin: 0;
-    font-family: 'Montserrat', sans-serif;
-    background: #f6f4ef; 
-    color: #333;
+/* ------------------ RESET ------------------ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
 }
 
-/* Barra superior */
+/* ------------------ HEADER ------------------ */
 .header {
-    background: #262626; 
-    color: #C6A667; 
-    padding: 14px 30px;
-    font-size: 22px;
-    font-family: 'Lora', serif;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-}
-.header-slogan {
-    background: #e9e4dc;
-    text-align: center;
-    padding: 6px 0;
-    font-size: 14px;
-    font-family: 'Lora', serif;
-    color: #6e6a63;
-    border-bottom: 1px solid #d1cabe;
-    letter-spacing: 0.8px;
+  width: 100%;
+  background: #004aad;
+  color: white;
+  padding: 15px 20px;
+  font-size: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000; /* evitar que la sidebar lo tape */
 }
 
-
-/* Menú lateral */
+/* ------------------ SIDEBAR ------------------ */
 .sidebar {
-    width: 240px;
-    background: #fff;
-    border-right: 1px solid #d8d3c8;
-    padding-top: 20px;
-    position: fixed;
-    top: 60px;
-    bottom: 0;
+  position: fixed;
+  top: 70px;            /* deja espacio debajo del header */
+  left: 0;
+  width: 220px;
+  height: 100%;
+  background: #1f1f1f;
+  padding-top: 20px;
+  overflow-y: auto;
+  z-index: 900;         /* siempre debajo del header */
 }
 
 .sidebar a {
-    display: block;
-    padding: 14px 22px;
-    text-decoration: none;
-    color: #444;
-    font-weight: 500;
+  display: block;
+  color: white;
+  text-decoration: none;
+  padding: 12px 18px;
+  transition: 0.3s;
+  font-size: 15px;
 }
 
 .sidebar a:hover {
-    background: #f0ede7;
-    border-right: 4px solid #C6A667;
+  background: #333;
 }
 
-/* Contenido */
+/* ------------------ CONTENIDO ------------------ */
 .content {
-    margin-left: 260px;
-    padding: 40px;
-    font-family: 'Lora', serif;
+  margin-left: 240px;
+  margin-top: 90px;     /* para no chocar con el header */
+  padding: 20px;
 }
 
-.title {
-    font-size: 28px;
-    border-bottom: 2px solid #C6A667;
-    padding-bottom: 10px;
-    margin-bottom: 20px;
-    font-weight: 600;
-}
-.btn {
+/* ------------------ RESPONSIVE ------------------ */
+@media (max-width: 900px) {
+
+  /* Sidebar se vuelve superior */
+  .sidebar {
+    position: relative;
+    width: 100%;
+    height: auto;
+    top: 0;
+  }
+
+  .sidebar a {
+    display: inline-block;
+    width: auto;
     padding: 10px 15px;
-    background: #7a5e42;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-}
-.btn:hover { background: #604831; }
+  }
 
+  .content {
+    margin-left: 0;
+    margin-top: 140px; /* header + barra pequeña */
+  }
+}
+
+@media (max-width: 600px) {
+  .header {
+    flex-direction: column;
+    text-align: center;
+    gap: 5px;
+  }
+
+  .sidebar a {
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+
+  .content {
+    margin-top: 160px;
+  }
+}

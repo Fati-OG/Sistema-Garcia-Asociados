@@ -24,35 +24,85 @@ $abogados = $conexion->query("SELECT Id_abgd, Nom_abgd, App_abgd, Apm_abgd, Cor_
 <title>Abogados Registrados</title>
 <link rel="stylesheet" href="../css/estilo_panel.css">
 <style>
+/* ----- ESTRUCTURA GENERAL ----- */
+* {
+  font-family: 'Montserrat', sans-serif;
+  box-sizing: border-box;
+}
+
+.content {
+  margin-left: 220px; /* evita empalme con sidebar */
+  padding: 20px;
+}
+
+/* ----- TABLA ----- */
 .table-box {
   background: white;
   padding: 20px;
   border: 1px solid #dcd6c8;
   border-radius: 8px;
-  max-width: 900px;
+  max-width: 1000px;
   margin: auto;
+  overflow-x: auto; /* RESPONSIVO */
 }
+
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 10px;
+  min-width: 800px;
 }
+
 th, td {
-  padding: 10px;
+  padding: 12px;
   border-bottom: 1px solid #e5e0d8;
   text-align: center;
+  font-size: 14px;
 }
-button {
+
+th {
+  background: #f5f1eb;
+  font-weight: bold;
+}
+
+/* ----- BOTONES / ACCIONES ----- */
+.acciones {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+/* BOTÓN EDITAR */
+.btn-editar {
+  background: #004aad;
+  color: white;
+  padding: 7px 12px;
+  border-radius: 5px;
+  font-size: 13px;
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+.btn-editar:hover {
+  background: #00337a;
+}
+
+/* BOTÓN ELIMINAR */
+.btn-eliminar {
   background: #c0392b;
   color: white;
+  padding: 7px 12px;
   border: none;
-  padding: 6px 10px;
   border-radius: 5px;
+  font-size: 13px;
   cursor: pointer;
-  transition: 0.3s;
+  transition: 0.2s ease;
 }
-button:hover { background: #922b21; }
 
+.btn-eliminar:hover {
+  background: #96281b;
+}
+
+/* ETIQUETA ADMIN */
 .admin-label {
   background: #ffc107;
   color: #212529;
@@ -61,7 +111,20 @@ button:hover { background: #922b21; }
   border-radius: 4px;
   font-weight: bold;
 }
+
+/* RESPONSIVO */
+@media (max-width: 768px) {
+  .content {
+    margin-left: 0;
+    padding: 10px;
+  }
+  .sidebar {
+    position: relative;
+    width: 100%;
+  }
+}
 </style>
+
 </head>
 <body>
 
@@ -94,28 +157,40 @@ button:hover { background: #922b21; }
     $mensaje = "";
     $tipo = "info";
 
-    switch ($_GET['msg']) {
-      case 'ok':
-        $mensaje = "✅ Abogado eliminado correctamente.";
-        $tipo = "success";
-        break;
-      case 'error_id':
-        $mensaje = "⚠️ ID de abogado no recibido.";
-        $tipo = "warning";
-        break;
-      case 'error_sql':
-        $mensaje = "❌ Error interno al preparar la eliminación.";
-        $tipo = "error";
-        break;
-      case 'error_exec':
-        $mensaje = "❌ No se pudo eliminar el abogado.";
-        $tipo = "error";
-        break;
-      case 'no_permiso':
-        $mensaje = "⚠️ No puedes eliminar a otro administrador ni a ti mismo.";
-        $tipo = "warning";
-        break;
-    }
+switch ($_GET['msg']) {
+  // ELIMINAR
+  case 'ok':
+    $mensaje = "✅ Abogado eliminado correctamente.";
+    $tipo = "success";
+    break;
+  case 'error_id':
+    $mensaje = "⚠️ ID de abogado no recibido.";
+    $tipo = "warning";
+    break;
+  case 'error_sql':
+    $mensaje = "❌ Error interno al preparar la eliminación.";
+    $tipo = "error";
+    break;
+  case 'error_exec':
+    $mensaje = "❌ No se pudo eliminar el abogado.";
+    $tipo = "error";
+    break;
+  case 'no_permiso':
+    $mensaje = "⚠️ No puedes eliminar a otro administrador ni a ti mismo.";
+    $tipo = "warning";
+    break;
+
+  // EDITAR
+  case 'edit_ok':
+    $mensaje = "✅ Abogado actualizado correctamente.";
+    $tipo = "success";
+    break;
+  case 'edit_err':
+    $mensaje = "❌ Error al actualizar el abogado.";
+    $tipo = "error";
+    break;
+}
+
   ?>
   <div class="mensaje <?= $tipo ?>" id="mensaje-notificacion">
     <?= $mensaje ?>
@@ -184,15 +259,29 @@ button:hover { background: #922b21; }
         <?php endif; ?>
       </td>
       <td>
-        <?php if ((int)$abg['es_admin'] === 0 && (int)$abg['Id_abgd'] !== (int)$_SESSION['Id_abgd']): ?>
-          <form action="../php/eliminar_abogado.php" method="POST" onsubmit="return confirm('¿Eliminar a <?= $abg['Nom_abgd']; ?>?');">
-            <input type="hidden" name="id_abgd" value="<?= $abg['Id_abgd']; ?>">
-            <button type="submit">🗑 Eliminar</button>
-          </form>
-        <?php else: ?>
-          <em style="color:gray;">No permitido</em>
-        <?php endif; ?>
-      </td>
+  <div class="acciones">
+
+    <a href="editar_abogado.php?id=<?= $abg['Id_abgd']; ?>" 
+       class="btn-editar">
+        Editar
+    </a>
+
+    <?php if ((int)$abg['es_admin'] === 0 && (int)$abg['Id_abgd'] !== (int)$_SESSION['Id_abgd']): ?>
+      <form action="../php/eliminar_abogado.php" method="POST"
+            onsubmit="return confirm('¿Eliminar a <?= $abg['Nom_abgd']; ?>?');">
+        <input type="hidden" name="id_abgd" value="<?= $abg['Id_abgd']; ?>">
+        <button type="submit" class="btn-eliminar">
+          Eliminar
+        </button>
+      </form>
+    <?php else: ?>
+      <em style="color:gray;">No permitido</em>
+    <?php endif; ?>
+
+  </div>
+</td>
+
+
     </tr>
   <?php endwhile; ?>
 <?php else: ?>
