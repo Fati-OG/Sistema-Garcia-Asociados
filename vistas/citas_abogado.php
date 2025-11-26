@@ -200,7 +200,15 @@ setTimeout(()=>{
 },3500);
 </script>
 
-<div class="table-box">
+<div style="margin-bottom:15px;">
+    <a href="../php/reporte_citas.php" 
+       style="background:#004aad;color:white;padding:8px 14px;border-radius:5px;
+              text-decoration:none;font-size:14px;">
+       📄 Generar Reporte de Citas
+    </a>
+</div>
+
+
 <table>
 <tr>
   <th>Fecha</th>

@@ -4,7 +4,6 @@ require_once __DIR__ . '/../inc/conexion.php';
 
 $correo   = isset($_POST['correo'])   ? trim($_POST['correo'])   : '';
 $password = isset($_POST['password']) ? trim($_POST['password']) : '';
-file_put_contents(__DIR__ . '/debug_log.txt', "Se ejecutó ESTE login_procesar.php\n", FILE_APPEND);
 
 if ($correo === '' || $password === '') {
     header('Location: ../vistas/login.php?error=1'); exit;
@@ -31,7 +30,7 @@ if ($row = $res->fetch_assoc()) {
     $_SESSION['Apm_abgd']  = $row['Apm_abgd'];
     $_SESSION['usuario']   = $row['Nom_abgd'];
     $_SESSION['es_admin']  = (int)$row['es_admin']; // 👈 FIX REAL
-file_put_contents(__DIR__ . '/debug_sesion.txt', print_r($_SESSION, true));
+
 
     // 🔍 Verificación temporal
     // var_dump($_SESSION); exit();

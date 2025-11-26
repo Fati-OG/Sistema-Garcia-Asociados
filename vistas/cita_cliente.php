@@ -39,6 +39,9 @@ th,td{padding:10px;border-bottom:1px solid #e5e0d8;text-align:center;}
 <div class="sidebar">
   <a href="panel_cliente.php">Inicio</a>
   <a href="cita_cliente.php">Mis Citas</a>
+  <a href="casos_cliente.php" class="active">Mis Casos</a>
+  <a href="facturas_cliente.php">Mis Facturas</a>
+
   <a href="../php/logout.php">Cerrar Sesión</a>
 </div>
 <div class="content">

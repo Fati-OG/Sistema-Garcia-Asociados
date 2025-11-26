@@ -44,7 +44,11 @@ if(!isset($_SESSION['rol']) || $_SESSION['rol'] != "cliente"){
 <div class="sidebar">
     <a href="panel_cliente.php">Inicio</a>
     <a href="cita_cliente.php">Mis Citas</a>
+    <a href="../vistas/casos_cliente.php">Mis Casos</a>
+    <a href="facturas_cliente.php">Mis Facturas</a>
+
     <a href="../php/logout.php">Cerrar Sesión</a>
+    
 </div>
 
 <div class="content">

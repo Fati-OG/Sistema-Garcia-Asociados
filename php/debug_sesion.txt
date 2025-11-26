@@ -1,0 +1,10 @@
+Array
+(
+    [rol] => abogado
+    [Id_abgd] => 1
+    [Nom_abgd] => Zendy Aracelly
+    [App_abgd] => García
+    [Apm_abgd] => Martinez
+    [usuario] => Zendy Aracelly
+    [es_admin] => 1
+)

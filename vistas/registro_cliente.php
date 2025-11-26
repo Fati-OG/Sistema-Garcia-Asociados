@@ -37,7 +37,7 @@ if(!isset($_SESSION['rol']) || $_SESSION['rol'] != "abogado"){
     border-radius: 4px;
 }
 button{
-    background: #C6A667;
+    background:#004aad;
     color: white;
     border: none;
     padding: 12px 20px;
@@ -47,7 +47,7 @@ button{
     cursor: pointer;
 }
 button:hover{
-    background: #b18f4f;
+   background:#00337a;
 }
 </style>
 </head>

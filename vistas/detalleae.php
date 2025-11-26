@@ -48,14 +48,14 @@ th, td {
   text-align: center;
 }
 button {
-  background: #C6A667;
+  background:#004aad;
   color: white;
   border: none;
   padding: 8px 14px;
   border-radius: 5px;
   cursor: pointer;
 }
-button:hover { background: #b18f4f; }
+button:hover { background:#00337a;} 
 .eliminar {
   background: #c0392b;
 }
@@ -177,7 +177,7 @@ button:hover { background: #b18f4f; }
             <td>
               <form action="../php/detalleae_eliminar.php" method="POST" onsubmit="return confirm('¿Eliminar esta relación?');">
                 <input type="hidden" name="id_da" value="<?= $d['Id_da']; ?>">
-                <button type="submit" class="eliminar">🗑</button>
+                <button type="submit" class="eliminar">Eliminar</button>
               </form>
             </td>
           </tr>

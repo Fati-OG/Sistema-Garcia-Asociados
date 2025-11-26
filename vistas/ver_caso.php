@@ -243,6 +243,66 @@ textarea, input[type=file]{
 <div class="container-box">
 
 <h1 class="title">Detalle del Caso</h1>
+<!-- BOTONES DE ACCIONES SUPERIORES -->
+<div class="top-actions">
+    <a href="../php/generar_reporte.php?id=<?= $idCaso ?>" target="_blank" class="action-btn dark">
+        📄 Generar Reporte PDF
+    </a>
+
+    <a href="../php/generar_factura.php?id=<?= $idCaso ?>" target="_blank" class="action-btn dark">
+        🧾 Generar Factura
+    </a>
+</div>
+
+<style>
+.top-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:12px;
+    margin-bottom:20px;
+}
+
+.action-btn{
+    padding:10px 18px;
+    border-radius:6px;
+    color:white;
+    text-decoration:none;
+    font-size:14px;
+    font-weight:600;
+    transition:0.2s;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+}
+
+.action-btn.dark{
+    background:#2c3e50;
+}
+.action-btn.dark:hover{
+    background:#1b2836;
+}
+
+.action-btn.grey{
+    background:#7f8c8d;
+}
+.action-btn.grey:hover{
+    background:#586466;
+}
+
+/* RESPONSIVO */
+@media(max-width:768px){
+    .top-actions{
+        flex-direction:column;
+        align-items:stretch;
+    }
+    .action-btn{
+        width:100%;
+        justify-content:center;
+    }
+}
+</style>
+
+
 
 <!-- ===========================
      INFORMACIÓN DEL CASO
@@ -309,7 +369,7 @@ textarea, input[type=file]{
   <input type="hidden" name="id_caso" value="<?= $idCaso ?>">
   <textarea name="nota" placeholder="Escribe una nota..." required></textarea>
   <br><br>
-  <button class="btn">➕ Agregar nota</button>
+  <button class="btn"> Agregar nota</button>
 </form>
 
 
@@ -364,6 +424,7 @@ textarea, input[type=file]{
 
 </div>
 </div>
+
 
 </body>
 </html>

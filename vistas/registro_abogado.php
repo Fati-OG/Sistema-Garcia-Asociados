@@ -46,7 +46,7 @@ if (!isset($_SESSION['es_admin']) || (int)$_SESSION['es_admin'] !== 1) {
     border-radius: 4px;
 }
 button{
-    background: #C6A667;
+    background:#004aad;
     color: white;
     border: none;
     padding: 12px 20px;
@@ -56,7 +56,7 @@ button{
     cursor: pointer;
 }
 button:hover{
-    background: #b18f4f;
+    background:#00337a;
 }
 </style>
 </head>

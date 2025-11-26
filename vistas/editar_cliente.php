@@ -60,7 +60,7 @@ input {
     border:1px solid #ccc;
 }
 button {
-    background:#27ae60;
+    background:#004aad;
     color:white;
     padding:12px;
     border:none;
@@ -70,7 +70,7 @@ button {
     cursor:pointer;
 }
 button:hover {
-    background:#1e8449;
+    background:#00337a;
 }
 </style>
 </head>
@@ -112,7 +112,7 @@ button:hover {
 <label>Dirección</label>
 <input type="text" name="dir" value="<?= $cliente['Dir_cl']; ?>" required>
 
-<button type="submit">💾 Guardar Cambios</button>
+<button type="submit">Guardar Cambios</button>
 
 </form>
 </div>
